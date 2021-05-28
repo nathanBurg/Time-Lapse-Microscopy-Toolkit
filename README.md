@@ -58,7 +58,6 @@ optional arguments:
                         Name of architecture (default: None)
 ```
 
-
 ### Prediction ###
 
 ``` shell script
@@ -110,4 +109,16 @@ optional arguments:
   After segmentation, this package provides cell counting and cell tracking. 
   
   
+  #### Example ####
+
+``` shell script
+
+> python train.py -e 200 -b 4 -cp Segmentation_test -fn images -mf masks -en resnet18 -wt imagenet -a unetplusplus
+
+> python predict.py -m Segmentation_test -i images -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
+
+> python cell_tracking.py -f predictions
+
+
+```
   
