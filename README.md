@@ -113,9 +113,15 @@ optional arguments:
 
 ``` shell script
 
-> python train.py -e 200 -b 4 -cp Segmentation_test -fn images -mf masks -en resnet18 -wt imagenet -a unetplusplus
+> python augmentation.py -imf images/ -msf masks/ -a 4 -imfn train_images -mskfn train_masks -s 768 -gs True
 
-> python predict.py -m Segmentation_test -i images -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
+# add the original images to the augmented folders
+
+> python train.py -e 200 -b 4 -cp Segmentation_test/ -fn train_images/ -mf train_masks/ -en resnet18 -wt imagenet -a unetplusplus
+
+> python predict.py -m Segmentation_test/CP_epoch11.pth -i images/ -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
+
+# move the predictions from the source folder to a new folder (e.g., predictions)
 
 > python cell_tracking.py -f predictions
 
