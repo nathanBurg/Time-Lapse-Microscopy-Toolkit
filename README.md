@@ -9,6 +9,26 @@ This toolkit provides:
   * Cell tracking  
   * No coding required 
 - - - - 
+
+  ## Example ##
+
+``` shell script
+
+> python augmentation.py -imf images/ -msf masks/ -a 4 -imfn train_images -mskfn train_masks -s 768 -gs True
+
+# add the original images to the augmented folders
+
+> python train.py -e 200 -b 4 -cp Segmentation_test/ -fn train_images/ -mf train_masks/ -en resnet18 -wt imagenet -a unetplusplus
+
+> python predict.py -m Segmentation_test/CP_epoch11.pth -i images/ -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
+
+# move the predictions from the source folder to a new folder (e.g., predictions)
+
+> python cell_tracking.py -f predictions
+
+
+```
+
 ## Segmentation  ##
 
 This package uses the [Segmentation Models Pytorch](https://github.com/qubvel/segmentation_models.pytorch "Segmentation Models Pytorch") package to provide a wide range of CNN architectures and encoders for image segmentation. 
@@ -109,22 +129,5 @@ optional arguments:
   After segmentation, this package provides cell counting and cell tracking. 
   
   
-  #### Example ####
 
-``` shell script
-
-> python augmentation.py -imf images/ -msf masks/ -a 4 -imfn train_images -mskfn train_masks -s 768 -gs True
-
-# add the original images to the augmented folders
-
-> python train.py -e 200 -b 4 -cp Segmentation_test/ -fn train_images/ -mf train_masks/ -en resnet18 -wt imagenet -a unetplusplus
-
-> python predict.py -m Segmentation_test/CP_epoch11.pth -i images/ -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
-
-# move the predictions from the source folder to a new folder (e.g., predictions)
-
-> python cell_tracking.py -f predictions
-
-
-```
   
