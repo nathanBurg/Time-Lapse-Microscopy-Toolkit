@@ -2,7 +2,7 @@
 
 This toolkit provides: 
   * Image segmentation 
-    * Six CNN architectures
+    * Five CNN architectures
     * Thirteen encoders with pre-trained weights
     * Augmentation 
   * Cell counter
@@ -37,6 +37,18 @@ This toolkit provides:
 ## Segmentation  ##
 
 This package uses the [Segmentation Models Pytorch](https://github.com/qubvel/segmentation_models.pytorch "Segmentation Models Pytorch") package to provide a wide range of CNN architectures and encoders for image segmentation. 
+
+#### Architectures ####
+
+* Unet
+* UnetPlusPlus
+* MAnet
+* Linknet
+* FPN
+
+#### Encoders ####
+
+* See full list of encoders on [Segmentation Models Pytorch](https://github.com/qubvel/segmentation_models.pytorch "Segmentation Models Pytorch")
 
 ### Augmentation ###
 
