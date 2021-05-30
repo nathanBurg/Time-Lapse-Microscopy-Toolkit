@@ -34,6 +34,38 @@ This toolkit provides:
 
 This package uses the [Segmentation Models Pytorch](https://github.com/qubvel/segmentation_models.pytorch "Segmentation Models Pytorch") package to provide a wide range of CNN architectures and encoders for image segmentation. 
 
+### Augmentation ###
+
+``` shell script
+
+> python augmentation.py -h
+usage: augmentation.py [-h] [--image-folder IMAGE_FOLDER]
+                       [--mask-folder MASK_FOLDER] [--aug-size AUG_SIZE]
+                       [--im-folder-nm IM_FOLDER_NM]
+                       [--msk-folder-nm MSK_FOLDER_NM] [--scale SCALE]
+                       [--grayscale]
+
+Create a new augmented dataset
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --image-folder IMAGE_FOLDER, -imf IMAGE_FOLDER
+                        Path to image folder (default: None)
+  --mask-folder MASK_FOLDER, -msf MASK_FOLDER
+                        Path to mask folder (default: None)
+  --aug-size AUG_SIZE, -a AUG_SIZE
+                        How many times to augment the original image folder
+                        (default: None)
+  --im-folder-nm IM_FOLDER_NM, -imfn IM_FOLDER_NM
+                        Name for new augmented image folder (default: None)
+  --msk-folder-nm MSK_FOLDER_NM, -mskfn MSK_FOLDER_NM
+                        Name for new augmented mask folder (default: None)
+  --scale SCALE, -s SCALE
+                        Dimension to scale ass the images (default: 768)
+  --grayscale, -gs      Make all the augmented images grayscale (default:
+                        False)
+```
+
 ### Training ###
 
 ```shell script
@@ -83,7 +115,7 @@ optional arguments:
 
 ``` shell script
 
-C:\Users\kevin\Desktop\final_cnn>python predict.py -h
+> python predict.py -h
 usage: predict.py [-h] [--model FILE] --input INPUT [INPUT ...]
                   [--output INPUT [INPUT ...]] [--viz] [--no-save]
                   [--mask-threshold MASK_THRESHOLD] [--scale SCALE]
@@ -124,6 +156,22 @@ optional arguments:
                         Name of architecture (default: None)
                         
   ```
+  
+  
+  ### Cell Counting and Tracking ###
+  
+  ``` shell script
+> python cell_tracking.py -h
+usage: cell_tracking.py [-h] --folder FOLDER
+
+Count and track cells
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --folder FOLDER, -f FOLDER
+                        path to image folder (default: None)
+                        
+```
   
   ## Cell Counting and Tracking ##
   
