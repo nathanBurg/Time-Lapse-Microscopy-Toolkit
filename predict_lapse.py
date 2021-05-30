@@ -6,7 +6,7 @@ import shutil
 def get_args():
     parser = argparse.ArgumentParser(description='Visualize predictions at each epoch',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--folder', '-f', help='path to image folder', type=str, required=True)
+    parser.add_argument('--folder', '-f', help='path to model folder', type=str, required=True)
 
     parser.add_argument('--video-name', '-n', type=str, required=True, help='Name of new movie')
 
@@ -15,7 +15,7 @@ def get_args():
     return parser.parse_args()
 
 
-def pred_lps(folder_name, video_name, save_im)
+def pred_lps(folder_name, video_name, save_im):
     folder_name = "UnetPlusPlus_0.5_resnet18_imagenet_wogal07_predict" #Folder with saved models
     video_name = folder_name + ".avi"
     folder = os.listdir(folder_name)
