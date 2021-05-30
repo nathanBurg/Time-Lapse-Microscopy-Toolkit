@@ -16,7 +16,7 @@ This toolkit provides:
 # Create a static library of augmented images
 > python augmentation.py -imf images/ -msf masks/ -a 4 -imfn train_images -mskfn train_masks -s 768 -gs True
 
-# Add the original images to the augmented folders
+# Train the model with the augmented and original images
 > python train.py -e 200 -b 4 -cp Segmentation_test/ -fn train_images/ -mf train_masks/ -en resnet18 -wt imagenet -a unetplusplus
 
 # Monitor the training using Tensorboard
@@ -25,6 +25,7 @@ This toolkit provides:
 # Use predict lapse to determine which epoch produced the best results
 > python predict_lapse.py -f Segmentation_test -n test_video -s True
 
+# Make predictions using the trained model 
 > python predict.py -m Segmentation_test/CP_epoch11.pth -i images/ -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
 
 # Move the predictions from the source folder to a new folder (e.g., predictions)
