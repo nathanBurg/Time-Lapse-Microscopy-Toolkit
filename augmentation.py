@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import cv2
 import os
 import argparse
-
+import numpy as np
 
 
 # This function opens the all the images in a folder
@@ -36,9 +36,9 @@ def get_args():
                         help="Name for new augmented mask folder")
 
     parser.add_argument('--scale', '-s', type=int, default=768,
-                        help="Dimension to scale ass the images")
+                        help="Dimension to scale images")
 
-    parser.add_argument('--grayscale', '-gs', action='store_true', default=False,
+    parser.add_argument('--grayscale', '-gs', default=True,
                         help='Make all the augmented images grayscale')
 
 
@@ -60,8 +60,14 @@ def save_aug(img, msk, im_nm, msk_nm, im_folder_nm, msk_folder_nm):
     sample = augmentation(image=img, mask=msk)
     image, mask = sample['image'], sample['mask']
 
+    kernel = np.ones((2, 2), 'uint8')
+    image = cv2.dilate(image, kernel, iterations=1)
+    mask = cv2.dilate(mask, kernel, iterations=1)
+
+
     image = Image.fromarray(image)
     mask = Image.fromarray(mask)
+
 
     if scale:
         image = image.resize((scale, scale))
@@ -70,6 +76,7 @@ def save_aug(img, msk, im_nm, msk_nm, im_folder_nm, msk_folder_nm):
     if grayscale:
         image = ImageOps.grayscale(image)
         mask = ImageOps.grayscale(mask)
+
 
     image.save(im_folder_nm + '/' + str(im_nm) + '.tif')
     mask.save(msk_folder_nm + '/' + str(msk_nm) + '_mask.tif')
@@ -108,4 +115,4 @@ if __name__ == '__main__':
     scale = args.scale
     grayscale = args.grayscale
 
-    aug = aug_set(im_folder=im_folder, msk_folder =msk_folder, aug_size=aug_size, im_folder_nm=im_folder_nm, msk_folder_nm=msk_folder_nm)
+    aug = aug_set(im_folder=im_folder, msk_folder =msk_folder, aug_size=aug_size, im_folder_nm=im_folder_nm, msk_folder_nm=msk_folder_nm, scale=scale, grayscale=grayscale)
