@@ -163,13 +163,13 @@ def get_args():
     parser.add_argument('--device', '-d', type=str,
                         help="Select device",
                         default="cuda:0")
-    parser.add_argument('-en', '--encoder', type=str,
+    parser.add_argument('--encoder', '-en', type=str,
                         help="Name of encoder",
                         default='resnet34')
-    parser.add_argument('-wt', '--weight', type=str,
+    parser.add_argument('--weight', '-wt', type=str,
                         help="Encoder weights",
                         default=None)
-    parser.add_argument('-a', '--architecture', type=str,
+    parser.add_argument('--architecture', '-a', type=str,
                         help="Name of architecture")
 
     return parser.parse_args()
