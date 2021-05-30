@@ -14,7 +14,7 @@ This toolkit provides:
 
 ``` shell script
 # Create a static library of augmented images
-> python augmentation.py -imf images/ -msf masks/ -a 4 -imfn train_images -mskfn train_masks -s 768 -gs True
+> python augmentation.py -imf images -msf masks -a 4 -imfn train_images -mskfn train_masks -s 768 -gs True
 
 # Train the model with the augmented and original images
 > python train.py -e 200 -b 4 -cp Segmentation_test/ -fn train_images/ -mf train_masks/ -en resnet18 -wt imagenet -a unetplusplus
