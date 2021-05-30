@@ -143,13 +143,13 @@ def get_args():
                         help='Downscaling factor of the images')
     parser.add_argument('-v', '--validation', dest='val', type=float, default=10.0,
                         help='Percent of the data that is used as validation (0-100)')
-    parser.add_argument('--classes', '-c', type=int,
+    parser.add_argument('-c', '--classes', type=int,
                         help="Model output channels",
                         default=1)
-    parser.add_argument('--in-channels', '-ic', type=int,
+    parser.add_argument('-ic', '--in-channels', type=int,
                         help="Model input channels",
                         default=1)
-    parser.add_argument('--device', '-d', type=str,
+    parser.add_argument('-d', '--device', type=str,
                         help="Select device",
                         default="cuda:0")
     parser.add_argument('-cp', '--checkpoint', type=str,
