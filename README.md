@@ -86,11 +86,9 @@ optional arguments:
 
 ```shell script
 
-> python train.py -h
-usage: train.py [-h] [-e E] [-b [B]] [-l [LR]] [-f LOAD] [-s SCALE] [-v VAL]
-                [--classes CLASSES] [--in-channels IN_CHANNELS]
-                [--device DEVICE] [-cp CHECKPOINT] [-fn FILE]
-                [-mf MASK_FOLDER] [-en ENCODER] [-wt WEIGHT] [-a ARCHITECTURE]
+> python train.py -h     
+usage: train.py [-h] [-e E] [-b [B]] [-l [LR]] [-f LOAD] [-s SCALE] [-v VAL] [--classes CLASSES] [--in-channels IN_CHANNELS] [--device DEVICE]
+                [-cp CHECKPOINT] [-fn FILE] [-en ENCODER] [-wt WEIGHT]
 
 Train the UNet on images and target masks
 
@@ -105,8 +103,7 @@ optional arguments:
   -s SCALE, --scale SCALE
                         Downscaling factor of the images (default: 0.5)
   -v VAL, --validation VAL
-                        Percent of the data that is used as validation (0-100)
-                        (default: 10.0)
+                        Percent of the data that is used as validation (0-100) (default: 10.0)
   --classes CLASSES, -c CLASSES
                         Model output channels (default: 1)
   --in-channels IN_CHANNELS, -ic IN_CHANNELS
@@ -117,14 +114,38 @@ optional arguments:
                         Name folder for checkpoints (default: checkpoints/)
   -fn FILE, --file FILE
                         Name folder for images (default: None)
-  -mf MASK_FOLDER, --mask-folder MASK_FOLDER
-                        Name for folder for mask (default: None)
+  -en ENCODER, --encoder ENCODER
+                        Name of encoder (default: resnet34)
+  -wt WEIGHT, --weight WEIGHT
+                        Encoder weights (default: None)
+                                              
+```
+
+### Predict Lapse ###
+
+``` shell script 
+
+> python predict_lapse.py 
+usage: predict_lapse.py [-h] --folder FOLDER [-en ENCODER] [-wt WEIGHT] [-a ARCHITECTURE] --input INPUT [INPUT ...] [-n NAME]
+predict_lapse.py: error: the following arguments are required: --folder/-f, --input/-i
+nathanburg@Nathans-MBP CNN-Architecture-Comparison- % python3 predict_lapse.py -h
+usage: predict_lapse.py [-h] --folder FOLDER [-en ENCODER] [-wt WEIGHT] [-a ARCHITECTURE] --input INPUT [INPUT ...] [-n NAME]
+
+Visualize predictions at each epoch
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --folder FOLDER, -f FOLDER
+                        path to model folder (default: None)
   -en ENCODER, --encoder ENCODER
                         Name of encoder (default: resnet34)
   -wt WEIGHT, --weight WEIGHT
                         Encoder weights (default: None)
   -a ARCHITECTURE, --architecture ARCHITECTURE
                         Name of architecture (default: None)
+  --input INPUT [INPUT ...], -i INPUT [INPUT ...]
+                        filenames of input images (default: None)
+  -n NAME, --name NAME  Name for image folder (default: None)
 ```
 
 ### Prediction ###
@@ -132,30 +153,23 @@ optional arguments:
 ``` shell script
 
 > python predict.py -h
-usage: predict.py [-h] [--model FILE] --input INPUT [INPUT ...]
-                  [--output INPUT [INPUT ...]] [--viz] [--no-save]
-                  [--mask-threshold MASK_THRESHOLD] [--scale SCALE]
-                  [--classes CLASSES] [--in-channels IN_CHANNELS]
-                  [--device DEVICE] [-en ENCODER] [-wt WEIGHT]
-                  [-a ARCHITECTURE]
+usage: predict.py [-h] [--model FILE] --input INPUT [INPUT ...] [--output INPUT [INPUT ...]] [--viz] [--no-save] [--mask-threshold MASK_THRESHOLD]
+                  [--scale SCALE] [--classes CLASSES] [--in-channels IN_CHANNELS] [--device DEVICE] [-en ENCODER] [-wt WEIGHT] [-a ARCHITECTURE]
 
 Predict masks from input images
 
 optional arguments:
   -h, --help            show this help message and exit
   --model FILE, -m FILE
-                        Specify the file in which the model is stored
-                        (default: MODEL.pth)
+                        Specify the file in which the model is stored (default: MODEL.pth)
   --input INPUT [INPUT ...], -i INPUT [INPUT ...]
                         filenames of input images (default: None)
   --output INPUT [INPUT ...], -o INPUT [INPUT ...]
                         Filenames of ouput images (default: None)
-  --viz, -v             Visualize the images as they are processed (default:
-                        False)
+  --viz, -v             Visualize the images as they are processed (default: False)
   --no-save, -n         Do not save the output masks (default: False)
   --mask-threshold MASK_THRESHOLD, -t MASK_THRESHOLD
-                        Minimum probability value to consider a mask pixel
-                        white (default: None)
+                        Minimum probability value to consider a mask pixel white (default: None)
   --scale SCALE, -s SCALE
                         Scale factor for the input images (default: 0.5)
   --classes CLASSES, -c CLASSES
