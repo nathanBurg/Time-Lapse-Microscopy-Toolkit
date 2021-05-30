@@ -19,6 +19,9 @@ This toolkit provides:
 # Add the original images to the augmented folders
 > python train.py -e 200 -b 4 -cp Segmentation_test/ -fn train_images/ -mf train_masks/ -en resnet18 -wt imagenet -a unetplusplus
 
+# Monitor the training using Tensorboard
+> python tensorboard --logdir=Segmentation_test
+
 # Use predict lapse to determine which epoch produced the best results
 > python predict_lapse.py -f Segmentation_test -n test_video -s True
 
