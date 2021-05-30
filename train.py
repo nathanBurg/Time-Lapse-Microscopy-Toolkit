@@ -212,9 +212,6 @@ if __name__ == '__main__':
         elif architecture.lower() == 'fpn':
             net = smp.FPN(encoder_name=encoder, in_channels=in_channels, classes=classes, encoder_weights=weight)
 
-        elif architecture.lower() == 'unetplusplus':
-            net = smp.UnetPlusPlus(encoder_name=encoder, in_channels=in_channels, classes=classes, encoder_weights=weight)
-
         else:
             print("Architecture not recognized.")
             quit()
