@@ -23,7 +23,7 @@ This toolkit provides:
 > python tensorboard --logdir=Segmentation_test
 
 # Use predict lapse to determine which epoch produced the best results
-> python predict_lapse.py -f Segmentation_test -n test_video -s True
+> python predict_lapse.py -f Segmentation_test -n test_video -en resnet18 -wt imagenet -a unetplusplus
 
 # Make predictions using the trained model 
 > python predict.py -m Segmentation_test/CP_epoch11.pth -i images/ -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
