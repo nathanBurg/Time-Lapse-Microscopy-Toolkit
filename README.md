@@ -13,17 +13,18 @@ This toolkit provides:
   ## Example ##
 
 ``` shell script
-
+# Create a static library of augmented images
 > python augmentation.py -imf images/ -msf masks/ -a 4 -imfn train_images -mskfn train_masks -s 768 -gs True
 
-# add the original images to the augmented folders
-
+# Add the original images to the augmented folders
 > python train.py -e 200 -b 4 -cp Segmentation_test/ -fn train_images/ -mf train_masks/ -en resnet18 -wt imagenet -a unetplusplus
+
+# Use predict lapse to determine which epoch produced the best results
+> python predict_lapse.py -f Segmentation_test -n test_video -s True
 
 > python predict.py -m Segmentation_test/CP_epoch11.pth -i images/ -t 0.1 -en resnet18 -wt imagenet -a unetplusplus
 
-# move the predictions from the source folder to a new folder (e.g., predictions)
-
+# Move the predictions from the source folder to a new folder (e.g., predictions)
 > python cell_tracking.py -f predictions
 
 
