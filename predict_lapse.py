@@ -8,15 +8,30 @@ def get_args():
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--folder', '-f', help='path to model folder', type=str, required=True)
 
-    parser.add_argument('--video-name', '-n', type=str, required=True, help='Name of new movie')
-
-    parser.add_argument('--save-im', '-s', action='store_true', default=False, help='Save the predictions in a folder(y/n)')
+    parser.add_argument('--video-name', '-n',
+                        type=str, required=True,
+                        help='Name of new movie')
+    parser.add_argument('--save-im', '-s',
+                        default=False,
+                        help='Save the predictions in a folder(y/n)')
+    parser.add_argument('-en', '--encoder', type=str,
+                        help="Name of encoder",
+                        default='resnet34')
+    parser.add_argument('-wt', '--weight', type=str,
+                        help="Encoder weights",
+                        default=None)
+    parser.add_argument('-a', '--architecture', type=str,
+                        help="Name of architecture")
+    parser.add_argument('--input', '-i', metavar='INPUT', nargs='+',
+                        help='filenames of input images', required=True)
 
     return parser.parse_args()
 
 
-def pred_lps(folder_name, video_name, save_im):
-    folder_name = "UnetPlusPlus_0.5_resnet18_imagenet_wogal07_predict" #Folder with saved models
+def pred_lps(folder_name, video_name,
+    save_im, encoder, weight, architecture, in_file):
+
+    folder_name = folder_name #Folder with saved models
     video_name = folder_name + ".avi"
     folder = os.listdir(folder_name)
 
@@ -36,7 +51,6 @@ def pred_lps(folder_name, video_name, save_im):
             num = fl[8:]
             num_folder.append(num)
 
-
         int_ls = [int(i) for i in num_folder]
         int_ls_sort = sorted(int_ls)
         #str_ls_sort = [str(j) for j in int_ls_sort]
@@ -55,15 +69,20 @@ def pred_lps(folder_name, video_name, save_im):
         model_pth = os.path.join(folder_name, file)
         fl = file[:-4]
         epoch_num = fl[8:]
-        fl_nm = "temp/Gallagher_071417_Images_T=0001" + "_epoch" + str(epoch_num) + '.tif'
+        spl_fl = file.split('/')[-1]
+
+        fl_nm = "temp/" + "_epoch" + epoch_num + '.tif'
         image_nms.append(fl_nm)
-        cmd = "python predict.py -m " +  model_pth + " -i Gal_071417_raw/Gallagher_071417_Images_T=0117.tif -o " + fl_nm
+        cmd = "python3 predict.py -m " + str(model_pth) + " -i " + str(in_file[0]) + ' -en ' + str(encoder) + ' -a ' + str(architecture) + " -o " + str(fl_nm)
+        print(cmd)
+        #' -wt ' + str(weight)
         os.system(cmd)
+
 
 
     image_folder = 'temp'
 
-    images = [img for img in os.listdir(image_folder) if img.endswith(".tif")]
+    images = [img for img in os.listdir(image_folder) if img.endswith((".tif"))]
     frame = cv2.imread(os.path.join(image_folder, images[0]))
     height, width, layers = frame.shape
 
@@ -74,8 +93,10 @@ def pred_lps(folder_name, video_name, save_im):
 
     cv2.destroyAllWindows()
     video.release()
+    '''
     if not save_im:
         shutil.rmtree("temp")
+    '''
 
 
 if __name__ == '__main__':
@@ -83,4 +104,9 @@ if __name__ == '__main__':
     folder_name=args.folder
     video_name=args.video_name
     save_im = args.save_im
-    pred = pred_lps(folder_name, video_name, save_im)
+    encoder = args.encoder
+    weight = args.weight
+    architecture = args.architecture
+    in_file = args.input
+    pred = pred_lps(folder_name, video_name,
+        save_im, encoder, weight, architecture, in_file)
