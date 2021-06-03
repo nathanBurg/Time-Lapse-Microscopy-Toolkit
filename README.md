@@ -33,12 +33,6 @@ This toolkit provides:
 
 
 ```
-<p align="center">
-  <img width="586" alt="Screen Shot 2021-05-30 at 2 57 44 PM" src="https://user-images.githubusercontent.com/58287074/120590926-26798e80-c3f0-11eb-82bd-7fd6b4d06903.png">
- </p>
-
-
-
 
 ## Segmentation  ##
 
@@ -56,10 +50,18 @@ This package uses the [Segmentation Models Pytorch](https://github.com/qubvel/se
 
 * See full list of encoders on [Segmentation Models Pytorch](https://github.com/qubvel/segmentation_models.pytorch "Segmentation Models Pytorch")
 
-  
+<p align="center">
+  <img width="586" alt="Screen Shot 2021-05-30 at 2 57 44 PM" src="https://user-images.githubusercontent.com/58287074/120590926-26798e80-c3f0-11eb-82bd-7fd6b4d06903.png">
+</p>
+
 ## Cell Counting and Tracking ##
   
 After segmentation, this package uses the [Trackpy](https://github.com/soft-matter/trackpy "Trackpy") package for cell counting and tracking. When cell_tracking.py is run, the program prints the mean number of cells per frame, the total number of tracks, the mean track distance, and returns a Pandas data structure with raw data on every frame. 
+
+<p float="center">
+  <img width="400" height="300"alt="Screen Shot 2021-06-02 at 10 43 23 PM" src="https://user-images.githubusercontent.com/58287074/120593437-5cb90d00-c3f4-11eb-8635-3972614ebdfc.png">
+  <img width="400" alt="Screen Shot 2021-06-02 at 10 44 31 PM" src="https://user-images.githubusercontent.com/58287074/120593632-a0ac1200-c3f4-11eb-8c3d-807d148641b8.png">
+</p>
 
 ### Augmentation ###
 
