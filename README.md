@@ -216,7 +216,16 @@ optional arguments:
                         
 ```
 
-  
+## Installation ##
+Create a folder called Time_Lapse_Microscopy_Toolkit.
+
+``` shell script
+
+$ git clone https://github.com/nathanBurg/Time-Lapse-Microscopy-Toolkit.git Time_Lapse_Microscopy_Toolkit
+$ pip3 install -r /path/to/Time_Lapse_Microscopy_Toolkit/requirements.txt 
+
+```
+
   
 
   
