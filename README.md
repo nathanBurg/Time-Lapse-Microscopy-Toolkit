@@ -56,6 +56,11 @@ This package uses the [Segmentation Models Pytorch](https://github.com/qubvel/se
 
 * See full list of encoders on [Segmentation Models Pytorch](https://github.com/qubvel/segmentation_models.pytorch "Segmentation Models Pytorch")
 
+  
+## Cell Counting and Tracking ##
+  
+After segmentation, this package uses the [Trackpy](https://github.com/soft-matter/trackpy "Trackpy") package for cell counting and tracking. When cell_tracking.py is run, the program prints the mean number of cells per frame, the total number of tracks, the mean track distance, and returns a Pandas data structure with raw data on every frame. 
+
 ### Augmentation ###
 
 ``` shell script
@@ -208,10 +213,7 @@ optional arguments:
                         path to image folder (default: None)
                         
 ```
-  
-  ## Cell Counting and Tracking ##
-  
-  After segmentation, this package provides cell counting and cell tracking. 
+
   
   
 
