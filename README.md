@@ -33,9 +33,8 @@ This toolkit provides:
 
 
 ```
-<p align="center">
-  <img width="586" alt="Screen Shot 2021-05-30 at 2 57 44 PM" src="https://user-images.githubusercontent.com/58287074/120121288-71c54000-c157-11eb-8e72-   1c3f02d46f77.png">
-</p>
+<img width="586" alt="Screen Shot 2021-05-30 at 2 57 44 PM" src="https://user-images.githubusercontent.com/58287074/120121288-71c54000-c157-11eb-8e72-   1c3f02d46f77.png">
+
 
 
 ## Segmentation  ##
