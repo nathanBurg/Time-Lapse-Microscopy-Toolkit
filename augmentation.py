@@ -11,45 +11,54 @@ import numpy as np
 def open_folder(folder):
     images = []
     for filename in sorted(os.listdir(folder)):
-        img = cv2.imread(os.path.join(folder,filename))
+        img = cv2.imread(os.path.join(folder, filename))
         if img is not None:
             images.append(img)
     return images
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description='Create a new augmented dataset',
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--image-folder', '-imf', type=str,
-                        help="Path to image folder")
+    parser = argparse.ArgumentParser(
+        description="Create a new augmented dataset",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument("--image-folder", "-imf", type=str, help="Path to image folder")
 
-    parser.add_argument('--mask-folder', '-msf', type=str,
-                        help="Path to mask folder")
+    parser.add_argument("--mask-folder", "-msf", type=str, help="Path to mask folder")
 
-    parser.add_argument('--aug-size', '-a', type=int,
-                        help="How many times to augment the original image folder")
+    parser.add_argument(
+        "--aug-size",
+        "-a",
+        type=int,
+        help="How many times to augment the original image folder",
+    )
 
-    parser.add_argument('--im-folder-nm', '-imfn', type=str,
-                        help="Name for new augmented image folder")
+    parser.add_argument(
+        "--im-folder-nm", "-imfn", type=str, help="Name for new augmented image folder"
+    )
 
-    parser.add_argument('--msk-folder-nm', '-mskfn', type=str,
-                        help="Name for new augmented mask folder")
+    parser.add_argument(
+        "--msk-folder-nm", "-mskfn", type=str, help="Name for new augmented mask folder"
+    )
 
-    parser.add_argument('--scale', '-s', type=int, default=768,
-                        help="Dimension to scale images")
+    parser.add_argument(
+        "--scale", "-s", type=int, default=768, help="Dimension to scale images"
+    )
 
-    parser.add_argument('--grayscale', '-gs', default=True,
-                        help='Make all the augmented images grayscale')
-
+    parser.add_argument(
+        "--grayscale",
+        "-gs",
+        default=True,
+        help="Make all the augmented images grayscale",
+    )
 
     return parser.parse_args()
 
 
-#Function to save augmentation to image/mask pair
+# Function to save augmentation to image/mask pair
 def save_aug(img, msk, im_nm, msk_nm, im_folder_nm, msk_folder_nm):
 
-
-    #Create separate folders for images and masks
+    # Create separate folders for images and masks
     if os.path.isdir(im_folder_nm) == True and os.path.isdir(msk_folder_nm) == True:
         pass
     else:
@@ -58,16 +67,14 @@ def save_aug(img, msk, im_nm, msk_nm, im_folder_nm, msk_folder_nm):
 
     augmentation = get_training_augmentation()
     sample = augmentation(image=img, mask=msk)
-    image, mask = sample['image'], sample['mask']
+    image, mask = sample["image"], sample["mask"]
 
-    kernel = np.ones((2, 2), 'uint8')
+    kernel = np.ones((2, 2), "uint8")
     image = cv2.dilate(image, kernel, iterations=1)
     mask = cv2.dilate(mask, kernel, iterations=1)
 
-
     image = Image.fromarray(image)
     mask = Image.fromarray(mask)
-
 
     if scale:
         image = image.resize((scale, scale))
@@ -77,12 +84,13 @@ def save_aug(img, msk, im_nm, msk_nm, im_folder_nm, msk_folder_nm):
         image = ImageOps.grayscale(image)
         mask = ImageOps.grayscale(mask)
 
+    image.save(im_folder_nm + "/" + str(im_nm) + ".tif")
+    mask.save(msk_folder_nm + "/" + str(msk_nm) + "_mask.tif")
 
-    image.save(im_folder_nm + '/' + str(im_nm) + '.tif')
-    mask.save(msk_folder_nm + '/' + str(msk_nm) + '_mask.tif')
 
-
-def aug_set(im_folder, msk_folder, aug_size, im_folder_nm, msk_folder_nm, scale, grayscale):
+def aug_set(
+    im_folder, msk_folder, aug_size, im_folder_nm, msk_folder_nm, scale, grayscale
+):
 
     try:
         im_folder = open_folder(im_folder)
@@ -98,13 +106,20 @@ def aug_set(im_folder, msk_folder, aug_size, im_folder_nm, msk_folder_nm, scale,
             count += 1
             nm = str(count)
             while len(nm) <= 3:
-                nm = '0' + nm
+                nm = "0" + nm
 
-            save_aug(img=im, msk=msk, im_nm=nm, msk_nm=nm, im_folder_nm=im_folder_nm, msk_folder_nm=msk_folder_nm)
-            print('Saved image pair ' + nm)
+            save_aug(
+                img=im,
+                msk=msk,
+                im_nm=nm,
+                msk_nm=nm,
+                im_folder_nm=im_folder_nm,
+                msk_folder_nm=msk_folder_nm,
+            )
+            print("Saved image pair " + nm)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_args()
 
     im_folder = args.image_folder
@@ -115,4 +130,12 @@ if __name__ == '__main__':
     scale = args.scale
     grayscale = args.grayscale
 
-    aug = aug_set(im_folder=im_folder, msk_folder =msk_folder, aug_size=aug_size, im_folder_nm=im_folder_nm, msk_folder_nm=msk_folder_nm, scale=scale, grayscale=grayscale)
+    aug = aug_set(
+        im_folder=im_folder,
+        msk_folder=msk_folder,
+        aug_size=aug_size,
+        im_folder_nm=im_folder_nm,
+        msk_folder_nm=msk_folder_nm,
+        scale=scale,
+        grayscale=grayscale,
+    )
