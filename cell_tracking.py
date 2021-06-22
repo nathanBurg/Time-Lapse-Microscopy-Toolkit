@@ -18,15 +18,20 @@ from wtershed_fxn import *
 def open_folder(folder):
     images = []
     for filename in sorted(os.listdir(folder)):
-        img = cv2.imread(os.path.join(folder,filename))
+        img = cv2.imread(os.path.join(folder, filename))
         if img is not None:
             images.append(img)
     return images
 
+
 def get_args():
-    parser = argparse.ArgumentParser(description='Count and track cells',
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--folder', '-f', help='path to image folder', type=str, required=True)
+    parser = argparse.ArgumentParser(
+        description="Count and track cells",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        "--folder", "-f", help="path to image folder", type=str, required=True
+    )
 
     return parser.parse_args()
 
@@ -40,50 +45,50 @@ def cell_tracker(folder_pth):
         ctr = wtershed(folder[i])
         frames.append(ctr)
 
-
     test_ind = np.random.randint(len(folder))
-    #test_ind = 0
-    f = tp.locate(frames[test_ind], 9, invert=False, separation=1,  minmass=300) # Identify and label every object
+    # test_ind = 0
+    f = tp.locate(
+        frames[test_ind], 9, invert=False, separation=1, minmass=300
+    )  # Identify and label every object
     plt.figure()
-    tp.annotate(f, frames[test_ind], plot_style={'markersize': 1});
-    #print(f.head())
+    tp.annotate(f, frames[test_ind], plot_style={"markersize": 1})
+    # print(f.head())
 
-    f = tp.batch(frames[:len(frames)], 5, invert=False, separation=1); # Label the whole batch
-
+    f = tp.batch(frames[: len(frames)], 5, invert=False, separation=1)
+    # Label the whole batch
 
     pred = tp.predict.NearestVelocityPredict()
     search_range = 21
     memory = 0
     adaptive_stop = 0.5
-    neighbor_strategy = 'BTree' # 'KDTree', 'BTree'
-    link_strategy = 'numba'    # ‘recursive’, ‘nonrecursive’, ‘numba’, ‘drop’, ‘auto’
-    t = tp.link_df(f, search_range,
-                   adaptive_stop=adaptive_stop,
-                   memory=memory
-                   #neighbor_strategy=neighbor_strategy,
-                   #link_strategy=link_strategy
-                   ) # Link features into trajectories
-
+    neighbor_strategy = "BTree"  # 'KDTree', 'BTree'
+    link_strategy = "numba"  # ‘recursive’, ‘nonrecursive’, ‘numba’, ‘drop’, ‘auto’
+    t = tp.link_df(
+        f,
+        search_range,
+        adaptive_stop=adaptive_stop,
+        memory=memory
+        # neighbor_strategy=neighbor_strategy,
+        # link_strategy=link_strategy
+    )  # Link features into trajectories
 
     # 18 - 20 pix for search dist
     print(t.head())
 
-    tracks = t.drop(['mass', 'size', 'ecc', 'signal', 'raw_mass', 'ep'], axis='columns')
+    tracks = t.drop(["mass", "size", "ecc", "signal", "raw_mass", "ep"], axis="columns")
     print(tracks.head())
-    #print('Number of particles: ' + str(len(np.unique(tracks['particles']))))
-
+    # print('Number of particles: ' + str(len(np.unique(tracks['particles']))))
 
     plt.figure()
-    tp.plot_traj(t) #superimpose=folder[0]
+    tp.plot_traj(t)  # superimpose=folder[0]
     plt.show()
 
-    frame_len = tracks['frame']
-
+    frame_len = tracks["frame"]
 
     cell_frame_cnt = dict()
     for fr in range(len(np.unique(frame_len))):
-        wrd = 'Frame ' + str(fr)
-        cell_cnt = np.sum(tracks['frame'] == fr)
+        wrd = "Frame " + str(fr)
+        cell_cnt = np.sum(tracks["frame"] == fr)
         cell_frame_cnt[wrd] = cell_cnt
 
     cell_cnt_val = cell_frame_cnt.values()
@@ -93,12 +98,11 @@ def cell_tracker(folder_pth):
 
     print("Mean number of cells per frame: " + str(cell_cnt_mean))
 
-
-    part_ls =  list(tracks['particle'])
+    part_ls = list(tracks["particle"])
 
     track_dict = dict()
     for un in range(len(np.unique(part_ls))):
-        word = 'particle ' + str(un)
+        word = "particle " + str(un)
         track_dict[word] = part_ls.count(un)
 
     track_dict_val = track_dict.values()
@@ -114,8 +118,7 @@ def cell_tracker(folder_pth):
     return tracks
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_args()
     folder_pth = args.folder
     cell_tracking = cell_tracker(folder_pth=folder_pth)
