@@ -1,7 +1,8 @@
 import torch
 from torch.autograd import Function
 
-device_f = torch.device('cuda:0')
+device_f = torch.device("cuda:0")
+
 
 class DiceCoeff(Function):
     """Dice coeff for individual examples"""
@@ -22,8 +23,12 @@ class DiceCoeff(Function):
         grad_input = grad_target = None
 
         if self.needs_input_grad[0]:
-            grad_input = grad_output * 2 * (target * self.union - self.inter) \
-                         / (self.union * self.union)
+            grad_input = (
+                grad_output
+                * 2
+                * (target * self.union - self.inter)
+                / (self.union * self.union)
+            )
         if self.needs_input_grad[1]:
             grad_target = None
 
@@ -48,6 +53,7 @@ from tqdm import tqdm
 
 classes = 1
 
+
 def eval_net(net, loader, device):
     """Evaluation without the densecrf with the dice coefficient"""
     net.eval()
@@ -55,9 +61,9 @@ def eval_net(net, loader, device):
     n_val = len(loader)  # the number of batch
     tot = 0
 
-    with tqdm(total=n_val, desc='Validation round', unit='batch', leave=False) as pbar:
+    with tqdm(total=n_val, desc="Validation round", unit="batch", leave=False) as pbar:
         for batch in loader:
-            imgs, true_masks = batch['image'], batch['mask']
+            imgs, true_masks = batch["image"], batch["mask"]
             imgs = imgs.to(device=device, dtype=torch.float32)
             true_masks = true_masks.to(device=device, dtype=mask_type)
 
@@ -86,16 +92,17 @@ from PIL import Image
 
 
 class BasicDataset(Dataset):
-    def __init__(self, imgs_dir, masks_dir, scale=1, mask_suffix=''):
+    def __init__(self, imgs_dir, masks_dir, scale=1, mask_suffix=""):
         self.imgs_dir = imgs_dir
         self.masks_dir = masks_dir
         self.scale = scale
         self.mask_suffix = mask_suffix
-        assert 0 < scale <= 1, 'Scale must be between 0 and 1'
+        assert 0 < scale <= 1, "Scale must be between 0 and 1"
 
-        self.ids = [splitext(file)[0] for file in listdir(imgs_dir)
-                    if not file.startswith('.')]
-        logging.info(f'Creating dataset with {len(self.ids)} examples')
+        self.ids = [
+            splitext(file)[0] for file in listdir(imgs_dir) if not file.startswith(".")
+        ]
+        logging.info(f"Creating dataset with {len(self.ids)} examples")
 
     def __len__(self):
         return len(self.ids)
@@ -104,8 +111,8 @@ class BasicDataset(Dataset):
     def preprocess(cls, pil_img, scale):
         w, h = pil_img.size
         newW, newH = int(scale * w), int(scale * h)
-        assert newW > 0 and newH > 0, 'Scale is too small' # default 0.5
-        pil_img = pil_img.resize((newW, newH)) # rescaled image
+        assert newW > 0 and newH > 0, "Scale is too small"  # default 0.5
+        pil_img = pil_img.resize((newW, newH))  # rescaled image
 
         img_nd = np.array(pil_img)
 
@@ -119,27 +126,29 @@ class BasicDataset(Dataset):
 
         return img_trans
 
-    def __getitem__(self, i): # matches mask and image and preprosses images
+    def __getitem__(self, i):  # matches mask and image and preprosses images
         idx = self.ids[i]
 
         mask_file = glob(self.masks_dir + idx + "_mask.*")
-        img_file = glob(self.imgs_dir + idx + '.*')
+        img_file = glob(self.imgs_dir + idx + ".*")
 
-
-        assert len(mask_file) == 1, \
-            f'Either no mask or multiple masks found for the ID {idx}: {mask_file}'
-        assert len(img_file) == 1, \
-            f'Either no image or multiple images found for the ID {idx}: {img_file}'
+        assert (
+            len(mask_file) == 1
+        ), f"Either no mask or multiple masks found for the ID {idx}: {mask_file}"
+        assert (
+            len(img_file) == 1
+        ), f"Either no image or multiple images found for the ID {idx}: {img_file}"
         mask = Image.open(mask_file[0])
         img = Image.open(img_file[0])
 
-        assert img.size == mask.size, \
-            f'Image and mask {idx} should be the same size, but are {img.size} and {mask.size}'
+        assert (
+            img.size == mask.size
+        ), f"Image and mask {idx} should be the same size, but are {img.size} and {mask.size}"
 
         img = self.preprocess(img, self.scale)
         mask = self.preprocess(mask, self.scale)
 
         return {
-            'image': torch.from_numpy(img).type(torch.FloatTensor),
-            'mask': torch.from_numpy(mask).type(torch.FloatTensor)
-        }   # Preprocess the image and can open image
+            "image": torch.from_numpy(img).type(torch.FloatTensor),
+            "mask": torch.from_numpy(mask).type(torch.FloatTensor),
+        }  # Preprocess the image and can open image
