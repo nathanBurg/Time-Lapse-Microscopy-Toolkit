@@ -4,7 +4,6 @@ albumentations
 Pillow
 opencv-python
 argparse
-logging
 torch
 torchvision
 tqdm
